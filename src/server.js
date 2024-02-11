@@ -1,32 +1,39 @@
 import http from 'http'
-import {getUsers, getUserById, createUser, updateUser, deleteUser } from './users'
-
-const PORT = process.env.PORT || 4000
+import { getUsers, getUserById, createUser, updateUser, deleteUser } from './users.js'
+import { notFound, badRequest, internalServerError } from './responses.js'
 
 const server = http.createServer((req, res) => {
-  const [_, resource, id] = req.url.split('/')
-  switch (req.method) {
-    case 'GET':
-      if (resource === 'users') {
-        if (id) getUserById(req, res, id)
-        else getUsers(req, res)
-      }
-      break
-    case 'POST':
-      if (resource === 'users') createUser(req, res)
-      break
-    case 'PUT':
-      if (resource === 'users') updateUser(req, res, id)
-      break
-    case 'DELETE':
-      if (resource === 'users') deleteUser(req, res, id)
-      break
-    default:
-      res.writeHead(404)
-      res.end('Not found')
+  const urlParts = req.url.split('/')
+  const method = req.method
+  const id = urlParts[3]
+
+  try {
+    if (req.url.startsWith('/api/users') && method === 'GET' && id) {
+      getUserById(req, res, id)
+      return
+    }
+    if (req.url === '/api/users' && method === 'GET') {
+      getUsers(req, res)
+      return
+    }
+    if (req.url === '/api/users' && method === 'POST') {
+      createUser(req, res)
+      return
+    }
+    if (req.url.startsWith('/api/users') && method === 'PUT' && id) {
+      updateUser(req, res, id)
+      return
+    }
+    if (req.url.startsWith('/api/users') && method === 'DELETE' && id) {
+      deleteUser(req, res, id)
+      return
+    }
+    notFound(res)
+  } catch (error) {
+    internalServerError(res)
   }
 })
 
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+const PORT = process.env.PORT || 3000
+
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
