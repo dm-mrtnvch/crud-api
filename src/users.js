@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { readFileSync, writeFileSync } from 'fs'
+import {badRequest} from './responses';
 
 const usersFile = 'users.json'
 
@@ -25,6 +26,26 @@ export const getUserById = (req, res, id) => {
   }
   res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(user))
+}
+
+export const createUser = (req, res) => {
+  let body = ''
+  req.on('data', chunk => {
+    body += chunk.toString()
+  })
+  req.on('end', () => {
+    const { username, age, hobbies } = JSON.parse(body)
+    if (!username || !age || !hobbies) {
+      badRequest(res)
+      return
+    }
+    const newUser = { id: uuidv4(), username, age, hobbies }
+    const users = readUsers()
+    users.push(newUser)
+    writeUsers(users)
+    res.writeHead(201, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify(newUser))
+  })
 }
 
 
