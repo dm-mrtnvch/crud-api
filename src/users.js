@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { readFileSync, writeFileSync } from 'fs'
-import {badRequest} from './responses';
+import {badRequest} from './responses.js';
 
 const usersFile = 'users.json'
 
@@ -10,13 +10,13 @@ const readUsers = () => JSON.parse(readFileSync(usersFile, { encoding: 'utf8', f
 
 const writeUsers = (users) => writeFileSync(usersFile, JSON.stringify(users, null, 2))
 
-export const getUsers = (req, res) => {
+const getUsers = (req, res) => {
   const users = readUsers()
   res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(users))
 }
 
-export const getUserById = (req, res, id) => {
+const getUserById = (req, res, id) => {
   const users = readUsers()
   const user = users.find(user => user.id === id)
   if (!user) {
@@ -28,7 +28,7 @@ export const getUserById = (req, res, id) => {
   res.end(JSON.stringify(user))
 }
 
-export const createUser = (req, res) => {
+const createUser = (req, res) => {
   let body = ''
   req.on('data', chunk => {
     body += chunk.toString()
@@ -48,7 +48,7 @@ export const createUser = (req, res) => {
   })
 }
 
-export const updateUser = (req, res, id) => {
+const updateUser = (req, res, id) => {
   let body = ''
   req.on('data', chunk => {
     body += chunk.toString()
@@ -69,7 +69,7 @@ export const updateUser = (req, res, id) => {
   })
 }
 
-export const deleteUser = (req, res, id) => {
+const deleteUser = (req, res, id) => {
   const users = readUsers()
   const userIndex = users.findIndex(user => user.id === id)
   if (userIndex === -1) {
@@ -83,4 +83,4 @@ export const deleteUser = (req, res, id) => {
   res.end()
 }
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser }
+export { getUsers, getUserById, createUser, updateUser, deleteUser }

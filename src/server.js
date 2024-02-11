@@ -1,4 +1,5 @@
 import http from 'http'
+import dotenv from 'dotenv'
 import { getUsers, getUserById, createUser, updateUser, deleteUser } from './users.js'
 import { notFound, badRequest, internalServerError } from './responses.js'
 
@@ -34,6 +35,7 @@ const server = http.createServer((req, res) => {
   }
 })
 
+dotenv.config()
 const PORT = process.env.PORT || 3000
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
