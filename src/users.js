@@ -69,22 +69,18 @@ export const updateUser = (req, res, id) => {
   })
 }
 
-
-function findUserIndexById(id) {
-  return users.findIndex(user => user.id === id)
-}
-
-
-function deleteUser(req, res, id) {
-  const index = findUserIndexById(id)
-  if (index !== -1) {
-    users.splice(index, 1)
-    res.writeHead(204)
-    res.end()
-  } else {
+export const deleteUser = (req, res, id) => {
+  const users = readUsers()
+  const userIndex = users.findIndex(user => user.id === id)
+  if (userIndex === -1) {
     res.writeHead(404)
     res.end('User not found')
+    return
   }
+  users.splice(userIndex, 1)
+  writeUsers(users)
+  res.writeHead(204)
+  res.end()
 }
 
 module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser }
