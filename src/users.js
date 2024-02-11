@@ -15,22 +15,23 @@ export const getUsers = (req, res) => {
   res.end(JSON.stringify(users))
 }
 
+export const getUserById = (req, res, id) => {
+  const users = readUsers()
+  const user = users.find(user => user.id === id)
+  if (!user) {
+    res.writeHead(404)
+    res.end('User not found')
+    return
+  }
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify(user))
+}
 
 
 function findUserIndexById(id) {
   return users.findIndex(user => user.id === id)
 }
 
-function getUserById(req, res, id) {
-  const index = findUserIndexById(id)
-  if (index !== -1) {
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(users[index]))
-  } else {
-    res.writeHead(404)
-    res.end('User not found')
-  }
-}
 
 function createUser(req, res) {
   let body = ''
