@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "username": "Morgan Freeman",
+    "age": 21,
+    "hobbies": ["read", "write", "sleep"]
+  },
+  {
+    "id": "2",
+    "username": "Bruce Willis",
+    "age": 22,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "3",
+    "username": "Robin Williams",
+    "age": 23,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "4",
+    "username": "Tom Hanks",
+    "age": 24,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "5",
+    "username": "Betty White",
+    "age": 25,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "6",
+    "username": "Sandra Bullock",
+    "age": 26,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "7",
+    "username": "Keanu Reeves",
+    "age": 27,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "8",
+    "username": "Hugh Jackman",
+    "age": 28,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "9",
+    "username": "Clint Eastwood",
+    "age": 29,
+    "hobbies": ["eat", "run", "wash"]
+  },
+  {
+    "id": "10",
+    "username": "Al Pacino",
+    "age": 30,
+    "hobbies": ["eat", "run", "wash"]
+  }
+]
