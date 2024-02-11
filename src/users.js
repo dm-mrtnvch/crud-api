@@ -1,12 +1,24 @@
+import { v4 as uuidv4 } from 'uuid'
+import { readFileSync, writeFileSync } from 'fs'
+
+const usersFile = 'users.json'
+
 const users = []
+
+const readUsers = () => JSON.parse(readFileSync(usersFile, { encoding: 'utf8', flag: 'a+' }) || '[]')
+
+const writeUsers = (users) => writeFileSync(usersFile, JSON.stringify(users, null, 2))
+
+export const getUsers = (req, res) => {
+  const users = readUsers()
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify(users))
+}
+
+
 
 function findUserIndexById(id) {
   return users.findIndex(user => user.id === id)
-}
-
-function getUsers(req, res) {
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(users))
 }
 
 function getUserById(req, res, id) {
