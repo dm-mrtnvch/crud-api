@@ -48,44 +48,32 @@ export const createUser = (req, res) => {
   })
 }
 
+export const updateUser = (req, res, id) => {
+  let body = ''
+  req.on('data', chunk => {
+    body += chunk.toString()
+  })
+  req.on('end', () => {
+    const users = readUsers()
+    const userIndex = users.findIndex(user => user.id === id)
+    if (userIndex === -1) {
+      res.writeHead(404)
+      res.end('User not found')
+      return
+    }
+    const updates = JSON.parse(body)
+    users[userIndex] = { ...users[userIndex], ...updates }
+    writeUsers(users)
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify(users[userIndex]))
+  })
+}
+
 
 function findUserIndexById(id) {
   return users.findIndex(user => user.id === id)
 }
 
-
-function createUser(req, res) {
-  let body = ''
-  req.on('data', chunk => {
-    body += chunk.toString()
-  })
-  req.on('end', () => {
-    const { username, age, hobbies } = JSON.parse(body)
-    const newUser = { id: String(users.length + 1), username, age, hobbies }
-    users.push(newUser)
-    res.writeHead(201, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(newUser))
-  })
-}
-
-function updateUser(req, res, id) {
-  let body = ''
-  req.on('data', chunk => {
-    body += chunk.toString()
-  })
-  req.on('end', () => {
-    const index = findUserIndexById(id)
-    if (index !== -1) {
-      const { username, age, hobbies } = JSON.parse(body)
-      users[index] = { ...users[index], username, age, hobbies }
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify(users[index]))
-    } else {
-      res.writeHead(404)
-      res.end('User not found')
-    }
-  })
-}
 
 function deleteUser(req, res, id) {
   const index = findUserIndexById(id)
